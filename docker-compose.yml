@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: fleet-management
+        container_name: fleet-management-app
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - fleet-network
+        depends_on:
+            - db
+
+    webserver:
+        image: nginx:alpine
+        container_name: fleet-management-webserver
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx:/etc/nginx/conf.d
+        networks:
+            - fleet-network
+        depends_on:
+            - app
+
+    db:
+        image: mysql:8.0
+        container_name: fleet-management-db
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: fleet_management
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_PASSWORD: root
+            MYSQL_USER: fleet_user
+        volumes:
+            - dbdata:/var/lib/mysql
+            - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        ports:
+            - "3306:3306"
+        networks:
+            - fleet-network
+
+    redis:
+        image: redis:alpine
+        container_name: fleet-management-redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        networks:
+            - fleet-network
+
+volumes:
+    dbdata:
+        driver: local
+
+networks:
+    fleet-network:
+        driver: bridge

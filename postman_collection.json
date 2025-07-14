@@ -1,0 +1,320 @@
+{
+	"info": {
+		"_postman_id": "ec25dede-fee3-4c78-aa25-a35bf0e7a77f",
+		"name": "Fleet Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32895011"
+	},
+	"item": [
+		{
+			"name": "Fleet Booking API",
+			"item": [
+				{
+					"name": "Get Available Seats",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"start_city_id\":\"1\",\n\"end_city_id\":\"3\",\n\"travel_date\":\"2025-07-15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/available-seats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"available-seats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Book a Seat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"trip_schedule_id\": 1,\n  \"seat_id\": 1,\n  \"start_city_id\": \"1\",\n  \"end_city_id\": \"3\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/book-seat",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"book-seat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Bookings",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": 1,\n  \"trip_id\": 1,\n  \"from\": \"Cairo\",\n  \"to\": \"AlMinya\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Bookings",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": 1,\n  \"trip_id\": 1,\n  \"from\": \"Cairo\",\n  \"to\": \"AlMinya\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-bookings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "[testing] Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('token', response.token);",
+									"    pm.collectionVariables.set('userId', response.user.id);",
+									"    pm.test('User registered successfully', () => {",
+									"        pm.expect(response.user).to.have.property('name');",
+									"        pm.expect(response.user).to.have.property('email');",
+									"        pm.expect(response).to.have.property('token');",
+									"    });",
+									"} else {",
+									"    pm.test('Registration failed', () => {",
+									"        pm.expect(pm.response.code).to.be.oneOf([422, 400]);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mosab\",\n    \"email\": \"muss3ab.1994@gmail.com\",\n    \"password\": \"Mosab@123\",\n    \"password_confirmation\": \"Mosab@123\"\n    \n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('token', response.token);",
+									"    pm.collectionVariables.set('userId', response.user.id);",
+									"    pm.test('Login successful', () => {",
+									"        pm.expect(response.user).to.have.property('name');",
+									"        pm.expect(response.user).to.have.property('email');",
+									"        pm.expect(response).to.have.property('token');",
+									"    });",
+									"} else {",
+									"    pm.test('Login failed', () => {",
+									"        pm.expect(pm.response.code).to.be.oneOf([401, 422]);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"muss3ab.1994@gmail.com\",\n    \"password\": \"Mosab@123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Logout successful', () => {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('message');",
+									"});",
+									"",
+									"// Clear token after logout",
+									"pm.collectionVariables.set('token', '');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	]
+}
