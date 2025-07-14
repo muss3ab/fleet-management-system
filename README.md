@@ -35,11 +35,13 @@ cd fleet-management-system
 docker-compose up -d
 ```
 
-3. Setup the application:
+3. Setup the application and run create schedule for future date
 
 ```bash
+cp .env.example .env
 docker-compose exec app php artisan migrate --seed
 docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan trip:create-schedule 1 2025-07-17 1
 ```
 
 The application will be available at `http://localhost:8080`
