@@ -6,6 +6,10 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Database\Seeders\CitiesSeeder;
+use Database\Seeders\BusesSeeder;
+use Database\Seeders\TripsSeeder;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,9 +19,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            CitiesSeeder::class,
+            BusesSeeder::class,
+            TripsSeeder::class
         ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        //     'password' => bcrypt('password'), // password
+
+        // ]);
     }
 }
