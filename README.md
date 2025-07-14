@@ -25,7 +25,7 @@ A comprehensive bus booking system built with Laravel 10, featuring seat booking
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/muss3ab/fleet-management-system
 cd fleet-management-system
 ```
 
@@ -49,7 +49,7 @@ The application will be available at `http://localhost:8080`
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/muss3ab/fleet-management-system
 cd fleet-management-system
 ```
 
